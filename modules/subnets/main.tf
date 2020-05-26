@@ -22,9 +22,6 @@ variable "subnet_name_prefix" {
     description = "string to be prepended to the name of the subnet"
 }
 
-variable "network_acl" {
-    description = "id of the network ACL to use for the subnets"
-}
 
 # String list of CIDR blocks
 variable "subnet_cidr_blocks" {
