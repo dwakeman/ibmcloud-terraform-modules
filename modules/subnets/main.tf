@@ -50,7 +50,7 @@ resource "ibm_is_subnet" "subnet1" {
     zone            = "${var.region}-1"
     ipv4_cidr_block = var.subnet_cidr_blocks[0]
     public_gateway  = var.public_gateways[0]
-    network_acl     = var.network_acl
+#    network_acl     = var.network_acl
 
 #    depends_on = [ibm_is_vpc.vpc1, ibm_is_vpc_address_prefix.address_prefix1, ibm_is_public_gateway.zone1_gateway, ibm_is_network_acl.isNetworkACL]
 }
@@ -62,7 +62,7 @@ resource "ibm_is_subnet" "subnet2" {
     zone            = "${var.region}-2"
     ipv4_cidr_block = var.subnet_cidr_blocks[1]
     public_gateway  = var.public_gateways[1]
-    network_acl     = var.network_acl
+#    network_acl     = var.network_acl
 
 #    depends_on = [ibm_is_vpc.vpc1, ibm_is_vpc_address_prefix.address_prefix2, ibm_is_public_gateway.zone2_gateway, ibm_is_network_acl.isNetworkACL]
 }
@@ -74,7 +74,7 @@ resource "ibm_is_subnet" "subnet3" {
     zone            = "${var.region}-3"
     ipv4_cidr_block = var.subnet_cidr_blocks[2]
     public_gateway  = var.public_gateways[2]
-    network_acl     = var.network_acl
+#    network_acl     = var.network_acl
 
 #    depends_on = [ibm_is_vpc.vpc1, ibm_is_vpc_address_prefix.address_prefix3, ibm_is_public_gateway.zone3_gateway, ibm_is_network_acl.isNetworkACL]
 }
