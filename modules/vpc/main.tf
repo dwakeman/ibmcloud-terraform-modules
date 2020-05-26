@@ -71,7 +71,7 @@ resource "ibm_is_security_group_rule" "vpc_default_security_group_rule_iks_manag
     depends_on = [ibm_is_vpc.vpc1]
  }
 
-
+/*
 ##############################################################################
 # Create Rule to allow all outbound traffic
 ##############################################################################
@@ -81,7 +81,7 @@ resource "ibm_is_security_group_rule" "default_security_group_rule_all_outbound"
 
     depends_on = [ibm_is_vpc.vpc1]
  }
-
+*/
 
 ##############################################################################
 # Create Address Prefixes
