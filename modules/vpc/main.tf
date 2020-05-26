@@ -76,7 +76,7 @@ resource "ibm_is_security_group_rule" "vpc_default_security_group_rule_iks_manag
 # Create Rule to allow all outbound traffic
 ##############################################################################
 resource "ibm_is_security_group_rule" "default_security_group_rule_all_outbound" {
-    group     = ibm_is_security_group.default_security_group.id
+    group     = ibm_is_vpc.vpc1.default_security_group
     direction = "outbound"
 
     depends_on = [ibm_is_vpc.vpc1]
