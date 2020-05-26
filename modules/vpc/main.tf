@@ -120,9 +120,6 @@ output "vpc_id" {
     value = ibm_is_vpc.vpc1.id
 }
 
-output "network_acl_id" {
-    value = ibm_is_network_acl.isNetworkACL.id
-}
 
 output "default_security_group_id" {
     value = ibm_is_vpc.vpc1.default_security_group
