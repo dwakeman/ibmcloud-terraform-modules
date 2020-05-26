@@ -40,63 +40,25 @@ resource "ibm_is_vpc" "vpc1" {
 }
 
 
-resource "ibm_is_network_acl" "isNetworkACL" {
-    name           = "${var.vpc_name}-default-acl"
-    vpc            = ibm_is_vpc.vpc1.id
-    resource_group = data.ibm_resource_group.vpc_resource_group.id
-
-    rules {
-      name = "outbound"
-      action = "allow"
-      source = "0.0.0.0/0"
-      destination = "0.0.0.0/0"
-      direction = "outbound"
-    }
-    rules {
-      name = "inbound"
-      action = "allow"
-      source = "0.0.0.0/0"
-      destination = "0.0.0.0/0"
-      direction = "inbound"
-    }
-
-    depends_on = [ibm_is_vpc.vpc1]
-}
-
 ##############################################################################
-# Create Security Group and Rules
+# Create Rule to allow all inbound traffic
 ##############################################################################
-resource "ibm_is_security_group" "default_security_group" {
-    name           = "${var.vpc_name}-default-sg"
-    vpc            = ibm_is_vpc.vpc1.id
-    resource_group = data.ibm_resource_group.vpc_resource_group.id
-
-    depends_on = [ibm_is_vpc.vpc1]
-}
-
 resource "ibm_is_security_group_rule" "default_security_group_rule_all_inbound" {
-    group     = ibm_is_security_group.default_security_group.id
+    group     = ibm_is_vpc.vpc1.default_security_group
     direction = "inbound"
-
-    depends_on = [ibm_is_security_group.default_security_group]
+    remote    = "0.0.0.0/0"
+    
+    depends_on = [ibm_is_vpc.vpc1]
  }
 
-##############################################################################
-# Create Rule to allow IKS Management traffic
-##############################################################################
-resource "ibm_is_security_group_rule" "default_security_group_rule_iks_management" {
-    group     = ibm_is_security_group.default_security_group.id
-    direction = "inbound"
-    tcp {
-        port_min = 30000
-        port_max = 32767
-    }
-
-    depends_on = [ibm_is_security_group.default_security_group]
- }
 
 ##############################################################################
 # Create Rule in default security group to allow IKS Management traffic
+#
+# Note: this rule may be redundant if there is also a rule to allow all
+#       inbound traffic.  It is included here for completeness in case the
+#       inbound rules change later.
+#
 ##############################################################################
 resource "ibm_is_security_group_rule" "vpc_default_security_group_rule_iks_management" {
     group     = ibm_is_vpc.vpc1.default_security_group
@@ -106,16 +68,18 @@ resource "ibm_is_security_group_rule" "vpc_default_security_group_rule_iks_manag
         port_max = 32767
     }
 
-    depends_on = [ibm_is_security_group.default_security_group]
+    depends_on = [ibm_is_vpc.vpc1]
  }
 
 
-
+##############################################################################
+# Create Rule to allow all outbound traffic
+##############################################################################
 resource "ibm_is_security_group_rule" "default_security_group_rule_all_outbound" {
     group     = ibm_is_security_group.default_security_group.id
     direction = "outbound"
 
-    depends_on = [ibm_is_security_group.default_security_group]
+    depends_on = [ibm_is_vpc.vpc1]
  }
 
 
@@ -158,4 +122,8 @@ output "vpc_id" {
 
 output "network_acl_id" {
     value = ibm_is_network_acl.isNetworkACL.id
+}
+
+output "default_security_group_id" {
+    value = ibm_is_vpc.vpc1.default_security_group
 }
